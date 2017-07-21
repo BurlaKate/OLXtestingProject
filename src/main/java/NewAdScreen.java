@@ -18,6 +18,10 @@ public class NewAdScreen {
     @FindBy(id = "choose-category-ilu")
     private WebElement rubricSelect;
 
+    @FindBy(id = "cat-35")
+    private WebElement animalRubric;
+    //document.querySelector(".overview li:nth-child(9)")
+
     @FindBy(id = "add-description")
     private WebElement descriptionArea;
 
@@ -44,9 +48,10 @@ public class NewAdScreen {
     }
 
     public NewAdScreen selectRubric() {
-//        (new WebDriverWait(driver, 10))
-//                .until((WebDriver webDriver) -> rubricSelect.isDisplayed());
         rubricSelect.click();
+        if(animalRubric.isDisplayed()){
+            animalRubric.click();
+        }
 
         return this;
     }

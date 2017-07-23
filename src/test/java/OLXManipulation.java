@@ -4,6 +4,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Katherine on 18.07.2017.
  */
@@ -14,8 +16,9 @@ public class OLXManipulation {
     private static final String CHERNIVTSI = "Чернівці";
     private static final String DESCRIPTION_VALUE = "Слухняний, полюбляє купатись";
     private static final String TITLE_VALUE = "Купи слона";
-    private static final String Y_OFFSET_VALUE = "2000";
+    private static final String Y_OFFSET_VALUE = "1000";
     private static final String NAME_VALUE = "Катерина";
+    private static final String PRICE_10000 = "10000";
 
     private static WebDriver driver;
 
@@ -24,6 +27,9 @@ public class OLXManipulation {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("http://olx.ua");
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        MainScreen mainScreen = new MainScreen(driver);
+        mainScreen.authorization(EMAIL, PASSWORD);
     }
 
     @AfterMethod
@@ -33,15 +39,18 @@ public class OLXManipulation {
 
     @Test
     public void shouldAddNewAdAndDeleteIt() {
-        MainScreen mainScreen = new MainScreen(driver);
-        mainScreen.pressNewAdButton().authorization(EMAIL, PASSWORD);
         NewAdScreen newAdScreen = new NewAdScreen(driver);
-        newAdScreen.enterTitleIntoInput(TITLE_VALUE)
+        newAdScreen.enterTitle(TITLE_VALUE)
                 .enterDescription(DESCRIPTION_VALUE)
-                .selectRubric()
+                .selectCategory()
+                .enterPrice(PRICE_10000)
+                .selectPrivateType()
                 .scrollTo(Y_OFFSET_VALUE)
-                .enterCityIntoInput(CHERNIVTSI)
-                .enterNameIntoInput(NAME_VALUE)
-                .pressSaveButton();
+                .enterCity(CHERNIVTSI)
+                .enterName(NAME_VALUE)
+                .pressSave();
+        AdsScreen adsScreen = new AdsScreen(driver);
+        adsScreen.doNotAdvertise(TITLE_VALUE);
+
     }
 }

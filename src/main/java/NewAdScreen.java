@@ -16,11 +16,22 @@ public class NewAdScreen {
     private WebElement titleInput;
 
     @FindBy(id = "choose-category-ilu")
-    private WebElement rubricSelect;
+    private WebElement categorySelect;
 
     @FindBy(id = "cat-35")
-    private WebElement animalRubric;
-    //document.querySelector(".overview li:nth-child(9)")
+    private WebElement animalCategory;
+
+    @FindBy(css = "#category-35 .overview li:nth-child(9)")
+    private WebElement otherAnimalCategory;
+
+    @FindBy(css = "#parameter-price + input[type = 'text']")
+    private WebElement priceInput;
+
+    @FindBy(id = "targetid_private_business")
+    private WebElement privateBusinessSelectBox;
+
+    @FindBy(css = "#targetid_private_business ul li:nth-child(2)")
+    private WebElement privateType;
 
     @FindBy(id = "add-description")
     private WebElement descriptionArea;
@@ -42,17 +53,31 @@ public class NewAdScreen {
         PageFactory.initElements(driver, this);
     }
 
-    public NewAdScreen enterTitleIntoInput(String titleValue) {
+    public NewAdScreen enterTitle(String titleValue) {
         titleInput.sendKeys(titleValue);
         return this;
     }
 
-    public NewAdScreen selectRubric() {
-        rubricSelect.click();
-        if(animalRubric.isDisplayed()){
-            animalRubric.click();
-        }
+    public NewAdScreen selectCategory() {
+        categorySelect.click();
+        animalCategory.click();
+        if (otherAnimalCategory.isDisplayed())
+            otherAnimalCategory.click();
+        return this;
+    }
 
+    public NewAdScreen enterPrice(String priceValue) {
+        (new WebDriverWait(driver, 20))
+                .until((WebDriver webDriver) -> priceInput.isDisplayed());
+        priceInput.sendKeys(priceValue);
+        return this;
+    }
+
+    public NewAdScreen selectPrivateType() {
+        privateBusinessSelectBox.click();
+        if (privateType.isDisplayed()) {
+            privateType.click();
+        }
         return this;
     }
 
@@ -61,11 +86,11 @@ public class NewAdScreen {
         return this;
     }
 
-    public NewAdScreen enterCityIntoInput(String inputValue) {
-        cityInput.sendKeys(inputValue);
-        (new WebDriverWait(driver, 10))
-                .until((WebDriver webDriver) -> suggestedcity.isDisplayed());
-        suggestedcity.click();
+    public NewAdScreen enterCity(String cityValue) {
+        cityInput.sendKeys(cityValue);
+//        (new WebDriverWait(driver, 10))
+//                .until((WebDriver webDriver) -> suggestedcity.isDisplayed());
+//        suggestedcity.click();
         return this;
     }
 
@@ -75,14 +100,14 @@ public class NewAdScreen {
         return this;
     }
 
-    public NewAdScreen enterNameIntoInput(String nameValue) {
+    public NewAdScreen enterName(String nameValue) {
         nameInput.sendKeys(nameValue);
         return this;
     }
 
-    public NewAdScreen pressSaveButton() {
+    public AdsScreen pressSave() {
         saveButton.click();
-        return this;
+        return new AdsScreen(driver);
     }
 
 

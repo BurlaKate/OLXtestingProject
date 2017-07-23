@@ -49,7 +49,8 @@ public class MainScreen {
     }
 
     public MainScreen authorization(String email, String password) {
-        enterLogin(email)
+        pressNewAdButton()
+                .enterLogin(email)
                 .enterPassword(password)
                 .pressEnterLogin();
         return this;

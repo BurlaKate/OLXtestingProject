@@ -66,7 +66,7 @@
                 <version>2.14</version>
                 <configuration>
                     <includes>
-                        <include>MortgagePaymentManipulation.java</include>
+                        <include>OLXManipulation.java</include>
                     </includes>
                     <testFailureIgnore>true</testFailureIgnore>
                     <argLine>

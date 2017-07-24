@@ -16,25 +16,26 @@ public class OLXManipulation {
     private static final String CHERNIVTSI = "Чернівці";
     private static final String DESCRIPTION_VALUE = "Слухняний, полюбляє купатись";
     private static final String TITLE_VALUE = "Купи слона";
-    private static final String Y_OFFSET_VALUE = "1000";
+    private static final String Y_OFFSET_VALUE = "1500";
     private static final String NAME_VALUE = "Катерина";
-    private static final String PRICE_10000 = "10000";
+    private static final String PRICE_VALUE = "10000";
+    private static final String OLX_URL = "http://olx.ua";
 
-    private static WebDriver driver;
+    private WebDriver driver;
 
     @BeforeMethod
     public void setup() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get("http://olx.ua");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get(OLX_URL);
         MainScreen mainScreen = new MainScreen(driver);
         mainScreen.authorization(EMAIL, PASSWORD);
     }
 
     @AfterMethod
     public void quit() {
-        driver.quit();
+//        driver.quit();
     }
 
     @Test
@@ -43,14 +44,15 @@ public class OLXManipulation {
         newAdScreen.enterTitle(TITLE_VALUE)
                 .enterDescription(DESCRIPTION_VALUE)
                 .selectCategory()
-                .enterPrice(PRICE_10000)
+                .enterPrice(PRICE_VALUE)
                 .selectPrivateType()
                 .scrollTo(Y_OFFSET_VALUE)
                 .enterCity(CHERNIVTSI)
                 .enterName(NAME_VALUE)
                 .pressSave();
-        AdsScreen adsScreen = new AdsScreen(driver);
-        adsScreen.doNotAdvertise(TITLE_VALUE);
+        AdvertisesScreen advertScreen = new AdvertisesScreen(driver);
+        advertScreen.doNotAdvertise(TITLE_VALUE)
+                    .openUserAdsScreen();
 
     }
 }

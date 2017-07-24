@@ -10,7 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class NewAdScreen {
 
-    WebDriver driver;
+    private static final String VALUE_ATTRIBUTE = "value";
+    private WebDriver driver;
 
     @FindBy(id = "add-title")
     private WebElement titleInput;
@@ -67,7 +68,7 @@ public class NewAdScreen {
     }
 
     public NewAdScreen enterPrice(String priceValue) {
-        (new WebDriverWait(driver, 20))
+        (new WebDriverWait(driver, 10))
                 .until((WebDriver webDriver) -> priceInput.isDisplayed());
         priceInput.sendKeys(priceValue);
         return this;
@@ -75,9 +76,7 @@ public class NewAdScreen {
 
     public NewAdScreen selectPrivateType() {
         privateBusinessSelectBox.click();
-        if (privateType.isDisplayed()) {
-            privateType.click();
-        }
+        privateType.click();
         return this;
     }
 
@@ -87,10 +86,12 @@ public class NewAdScreen {
     }
 
     public NewAdScreen enterCity(String cityValue) {
-        cityInput.sendKeys(cityValue);
-//        (new WebDriverWait(driver, 10))
-//                .until((WebDriver webDriver) -> suggestedcity.isDisplayed());
-//        suggestedcity.click();
+        if(cityInput.getAttribute(VALUE_ATTRIBUTE).isEmpty()){
+            cityInput.sendKeys(cityValue);
+            if (suggestedcity.isDisplayed()) {
+                suggestedcity.click();
+            }
+        }
         return this;
     }
 
@@ -101,13 +102,15 @@ public class NewAdScreen {
     }
 
     public NewAdScreen enterName(String nameValue) {
-        nameInput.sendKeys(nameValue);
+        if (nameInput.getAttribute(VALUE_ATTRIBUTE).isEmpty()) {
+            nameInput.sendKeys(nameValue);
+        }
         return this;
     }
 
-    public AdsScreen pressSave() {
+    public AdvertisesScreen pressSave() {
         saveButton.click();
-        return new AdsScreen(driver);
+        return new AdvertisesScreen(driver);
     }
 
 

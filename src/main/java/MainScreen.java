@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class MainScreen {
 
-    WebDriver driver;
+    private WebDriver driver;
     @FindBy(id = "postNewAdLink")
     private WebElement newAdButton;
     @FindBy(id = "userEmail")
@@ -48,12 +48,12 @@ public class MainScreen {
         return this;
     }
 
-    public MainScreen authorization(String email, String password) {
+    public NewAdScreen authorization(String email, String password) {
         pressNewAdButton()
                 .enterLogin(email)
                 .enterPassword(password)
                 .pressEnterLogin();
-        return this;
+        return new NewAdScreen(driver);
     }
 
 }

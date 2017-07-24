@@ -52,7 +52,7 @@ public class OLXManipulation {
                 .pressSave();
         AdvertisesScreen advertScreen = new AdvertisesScreen(driver);
         advertScreen.doNotAdvertise(TITLE_VALUE)
-                    .openUserAdsScreen();
+                .openUserAdsScreen();
 
     }
 }

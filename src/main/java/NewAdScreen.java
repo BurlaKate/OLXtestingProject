@@ -86,7 +86,7 @@ public class NewAdScreen {
     }
 
     public NewAdScreen enterCity(String cityValue) {
-        if(cityInput.getAttribute(VALUE_ATTRIBUTE).isEmpty()){
+        if (cityInput.getAttribute(VALUE_ATTRIBUTE).isEmpty()) {
             cityInput.sendKeys(cityValue);
             if (suggestedcity.isDisplayed()) {
                 suggestedcity.click();

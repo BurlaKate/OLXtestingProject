@@ -1,5 +1,6 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,10 +50,32 @@ public class OLXManipulation {
                 .scrollTo(Y_OFFSET_VALUE)
                 .enterCity(CHERNIVTSI)
                 .enterName(NAME_VALUE)
-                .pressSave();
-        AdvertisesScreen advertScreen = new AdvertisesScreen(driver);
-        advertScreen.doNotAdvertise(TITLE_VALUE)
-                .openUserAdsScreen();
+                .pressSave().doNotAdvertise(TITLE_VALUE);
+        UserTopMenu userTopMenu = new UserTopMenu(driver);
+        userTopMenu.openUserAdsScreen(userTopMenu.selectAdsItem());
+        AdsTabScreen adsTabScreen = new AdsTabScreen(driver);
+        Assert.assertEquals(adsTabScreen.getTitleFromTheTable(), TITLE_VALUE, "Wrong title in the table");
+        Assert.assertEquals(adsTabScreen.getPriceFromTheTable(), PRICE_VALUE, "Wrong price in the table");
+        adsTabScreen.pressCancelButton()
+                .switchToNotActiveTabs()
+                .pressDeleteButton();
+    }
+
+    @Test
+    public void shouldChangeUserInfo() {
+        UserTopMenu userTopMenu = new UserTopMenu(driver);
+        userTopMenu.openUserAdsScreen(userTopMenu.selectSettingsItem());
+        SettingsScreen settingsScreen = new SettingsScreen(driver);
+        settingsScreen.openUserInfoTab();
+        String oldCityValue = settingsScreen.getCityTitleFromCityInput();
+        String oldNameValue = settingsScreen.getUserNameFromNameInput();
+        // System.out.println(oldCityValue);
+//        System.out.println(oldNameValue);
+        settingsScreen.changeName("Петро")
+                .changeCity("Львів")
+                .pressSaveButton();
+
 
     }
+
 }

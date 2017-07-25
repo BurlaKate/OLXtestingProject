@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class NewAdScreen {
 
     private static final String VALUE_ATTRIBUTE = "value";
+    private static final String Y_OFFSET_VALUE = "1000";
     private WebDriver driver;
 
     @FindBy(id = "add-title")
@@ -48,6 +49,12 @@ public class NewAdScreen {
 
     @FindBy(id = "save")
     private WebElement saveButton;
+
+    @FindBy(css = "a[data-promo='withoutpromo']")
+    private WebElement doNotAdvertiseButton;
+
+    @FindBy(css = ".olx-multipay__title")
+    private WebElement adsTitle;
 
     NewAdScreen(WebDriver driver) {
         this.driver = driver;
@@ -108,9 +115,17 @@ public class NewAdScreen {
         return this;
     }
 
-    public AdvertisesScreen pressSave() {
+    public NewAdScreen pressSave() {
         saveButton.click();
-        return new AdvertisesScreen(driver);
+        return this;
+    }
+
+    public NewAdScreen doNotAdvertise(String titleValue) {
+        if (adsTitle.getText().equals(titleValue)) {
+            scrollTo(Y_OFFSET_VALUE);
+            doNotAdvertiseButton.click();
+        }
+        return this;
     }
 
 

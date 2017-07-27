@@ -7,9 +7,6 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 /**
  * Created by Katherine on 18.07.2017.
  */
@@ -19,6 +16,7 @@ public class OLXManipulation {
     private static final String PASSWORD = "1q2w3e4r5t";
     private static final String NEW_PASSWORD = "12345qwerty";
     private static final String NEW_PASSWORD_MESSAGE = "Новый пароль";
+    private static final String DELETE_ACCOUNT_MESSAGE = "E-mail был отправлен";
     private static final String CHERNIVTSI = "Чернівці";
     private static final String LVIV = "Львів";
     private static final String DESCRIPTION_VALUE = "Слухняний, полюбляє купатись";
@@ -35,7 +33,7 @@ public class OLXManipulation {
     public void setup() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.get(OLX_URL);
         MainScreen mainScreen = new MainScreen(driver);
         mainScreen.authorization(EMAIL, PASSWORD);
@@ -64,8 +62,8 @@ public class OLXManipulation {
         userTopMenu.selectUserTopMenuItem(userTopMenu.selectAdsItem());
         AdsTabScreen adsTabScreen = new AdsTabScreen(driver);
         adsTabScreen.switchToExpectedTabs();
-        assertThat(adsTabScreen.getTitleFromTheTable(), is(TITLE_VALUE));
-        assertThat(adsTabScreen.getPriceFromTheTable(), is(PRICE_VALUE));
+        Assert.assertEquals(adsTabScreen.getTitleFromTheTable(), TITLE_VALUE);
+        Assert.assertEquals(adsTabScreen.getPriceFromTheTable(), PRICE_VALUE);
         adsTabScreen.pressCancelButton()
                 .switchToNotActiveTabs()
                 .pressDeleteButton();
@@ -79,18 +77,11 @@ public class OLXManipulation {
         settingsScreen.openUserInfoTab();
         String oldCityValue = settingsScreen.getCityTitleFromCityInput();
         String oldNameValue = settingsScreen.getUserNameFromNameInput();
-        System.out.println(oldCityValue);
-        System.out.println(oldNameValue);
-        settingsScreen.changeName(CHANGED_NAME_VALUE)
-                .changeCity(LVIV)
-                .pressSaveButton();
+        settingsScreen.fillNameAndPasswordInputs(CHANGED_NAME_VALUE, LVIV);
         driver.navigate().refresh();
-        System.out.println(settingsScreen.getCityTitleFromCityInput());
-        System.out.println(settingsScreen.getUserNameFromNameInput());
-        settingsScreen.openUserInfoTab();
         Assert.assertNotEquals(oldCityValue, settingsScreen.getCityTitleFromCityInput(), "Old city but should be new!");
         Assert.assertNotEquals(oldNameValue, settingsScreen.getUserNameFromNameInput(), "Old name but should be new!");
-
+        settingsScreen.openUserInfoTab().fillNameAndPasswordInputs(NAME_VALUE, CHERNIVTSI);
     }
 
     @Test
@@ -102,7 +93,7 @@ public class OLXManipulation {
                 .enterNewPassword(NEW_PASSWORD)
                 .enterRepeatedPassword(NEW_PASSWORD)
                 .pressChangePassword();
-        assertThat(settingsScreen.getTextFromChangePasswordLabel(), is(NEW_PASSWORD_MESSAGE));
+        Assert.assertEquals(settingsScreen.getTextFromChangePasswordLabel(), NEW_PASSWORD_MESSAGE);
     }
 
     @Test
@@ -111,7 +102,10 @@ public class OLXManipulation {
         userTopMenu.selectUserTopMenuItem(userTopMenu.selectSettingsItem());
         SettingsScreen settingsScreen = new SettingsScreen(driver);
         settingsScreen.openDeleteAnAccountTab()
-                .pressDeleteAnAccountButton();
+                .pressDeleteAnAccountButton()
+                .pressSendOnEmailButtonOnConfirmationPopup();
+        Assert.assertEquals(settingsScreen.getTextFromChangePasswordLabel(), DELETE_ACCOUNT_MESSAGE);
+
 
     }
 

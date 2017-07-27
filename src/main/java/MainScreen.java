@@ -10,12 +10,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MainScreen {
 
     private WebDriver driver;
+
     @FindBy(id = "postNewAdLink")
     private WebElement newAdButton;
+
+    @FindBy(css = "span[class='link inlblk']")
+    private WebElement myAccountButton;
+
     @FindBy(id = "userEmail")
     private WebElement emailField;
+
     @FindBy(id = "userPass")
     private WebElement passwordField;
+
     @FindBy(id = "se_userLogin")
     private WebElement enterLogin;
 
@@ -26,6 +33,11 @@ public class MainScreen {
 
     public MainScreen pressNewAdButton() {
         newAdButton.click();
+        return this;
+    }
+
+    public MainScreen pressMyAccountButton(){
+        myAccountButton.click();
         return this;
     }
 
@@ -43,16 +55,16 @@ public class MainScreen {
         return this;
     }
 
-    public MainScreen pressEnterLogin() {
+    public MainScreen pressEnterLoginButton() {
         enterLogin.click();
         return this;
     }
 
     public NewAdScreen authorization(String email, String password) {
-        pressNewAdButton()
+        pressMyAccountButton()
                 .enterLogin(email)
                 .enterPassword(password)
-                .pressEnterLogin();
+                .pressEnterLoginButton();
         return new NewAdScreen(driver);
     }
 

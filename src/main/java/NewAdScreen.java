@@ -115,7 +115,7 @@ public class NewAdScreen {
         return this;
     }
 
-    public NewAdScreen pressSave() {
+    public NewAdScreen pressSaveButton() {
         saveButton.click();
         return this;
     }

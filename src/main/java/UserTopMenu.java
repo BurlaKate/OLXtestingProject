@@ -33,7 +33,7 @@ public class UserTopMenu {
         return settingsItemInTheList;
     }
 
-    public AdsTabScreen openUserAdsScreen(WebElement menuElement) {
+    public AdsTabScreen selectUserTopMenuItem(WebElement menuElement) {
         Actions builder = new Actions(driver);
         builder.moveToElement(topUserLink)
                 .moveToElement(menuElement)

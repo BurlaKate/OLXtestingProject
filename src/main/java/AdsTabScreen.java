@@ -13,8 +13,11 @@ public class AdsTabScreen {
     private static final String DATA_PRICE_ATTRIBUTE = "data-price";
     private WebDriver driver;
 
+    @FindBy(css = "#globalLinks li:nth-child(2) .fbold")
+    private WebElement expectedTab;
+
     @FindBy(css = "#globalLinks li:nth-child(3) .fbold")
-    private WebElement notActiveTabTitle;
+    private WebElement notActiveTab;
 
     @FindBy(css = ".tbody td:nth-child(4) .table .normal")
     private WebElement expectedAdTitle;
@@ -46,10 +49,17 @@ public class AdsTabScreen {
         return this;
     }
 
+    public AdsTabScreen switchToExpectedTabs() {
+        (new WebDriverWait(driver, 10))
+                .until((WebDriver webDriver) -> expectedTab.isDisplayed());
+        expectedTab.click();
+        return this;
+    }
+
     public AdsTabScreen switchToNotActiveTabs() {
         (new WebDriverWait(driver, 10))
-                .until((WebDriver webDriver) -> notActiveTabTitle.isDisplayed());
-        notActiveTabTitle.click();
+                .until((WebDriver webDriver) -> notActiveTab.isDisplayed());
+        notActiveTab.click();
         return this;
     }
 
